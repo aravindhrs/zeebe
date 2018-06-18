@@ -224,6 +224,7 @@
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
             <encoding>UTF-8</encoding>
             <failOnViolation>true</failOnViolation>
+            <excludes>**/generated-sources/**/*</excludes>
           </configuration>
           <executions>
             <execution>
