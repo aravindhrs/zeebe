@@ -19,10 +19,26 @@ pipeline {
     }
 
     stages {
+        stage('Install') {
+            steps {
+                withMaven(jdk: jdkVersion, maven: mavenVersion, mavenSettingsConfig: mavenSettingsConfig) {
+                    sh 'mvn -B clean com.mycila:license-maven-plugin:check install -DskipTests '
+                }
+            }
+        }
+
         stage('Tests') {
             steps {
                 withMaven(jdk: jdkVersion, maven: mavenVersion, mavenSettingsConfig: mavenSettingsConfig) {
-                    sh 'mvn clean generate-sources license:check source:jar javadoc:jar deploy -B -P jmh'
+                    sh 'mvn -B generate-sources source:jar javadoc:jar deploy'
+                }
+            }
+        }
+
+        stage('JMH') {
+            steps {
+                withMaven(jdk: jdkVersion, maven: mavenVersion, mavenSettingsConfig: mavenSettingsConfig) {
+                    sh 'mvn -B integration-test -DskipTests -P jmh'
                 }
             }
         }
