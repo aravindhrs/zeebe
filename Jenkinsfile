@@ -20,8 +20,8 @@ pipeline {
 
     stages {
         stage('Tests') {
-            withMaven(jdk: jdkVersion, maven: mavenVersion, mavenSettingsConfig: mavenSettingsConfig) {
-                steps {
+            steps {
+                withMaven(jdk: jdkVersion, maven: mavenVersion, mavenSettingsConfig: mavenSettingsConfig) {
                     sh 'mvn clean generate-sources license:check source:jar javadoc:jar deploy -B -P jmh'
                 }
             }
